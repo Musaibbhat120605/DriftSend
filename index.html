@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Optical Transfer — fountain-coded QR file transfer</title>
+    <link rel="stylesheet" href="./src/styles/app.css" />
+  </head>
+  <body>
+    <div class="masthead">
+      <h1>DECIMEN <small>optical transfer</small></h1>
+      <div class="eyebrow">screen → light → camera, no network</div>
+    </div>
+
+    <div class="diagram" aria-hidden="true">
+      <div class="node"><div class="glyph">▤</div><div class="label">file</div></div>
+      <div class="link"></div>
+      <div class="node"><div class="glyph">⊕</div><div class="label">fountain<br />encode</div></div>
+      <div class="link"></div>
+      <div class="node"><div class="glyph">▦</div><div class="label">QR<br />frames</div></div>
+      <div class="link air"></div>
+      <div class="node"><div class="glyph">◎</div><div class="label">camera</div></div>
+      <div class="link"></div>
+      <div class="node"><div class="glyph">▤</div><div class="label">file</div></div>
+    </div>
+
+    <p class="body-copy">
+      One page displays a file as an endless stream of animated QR codes.
+      Another device points its camera at the screen and reconstructs the
+      file — <strong>no network path between the two devices</strong>, no
+      pairing, no app permissions beyond the camera. Dropped frames cost a
+      little time, never correctness: the stream is fountain-coded, so any
+      frame the receiver catches, in any order, moves it closer to done.
+    </p>
+
+    <div class="cta-row">
+      <a class="btn" href="./send/">Open sender</a>
+      <a class="btn secondary" href="./receive/">Open receiver</a>
+    </div>
+  </body>
+</html>

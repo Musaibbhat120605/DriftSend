@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Optical Transfer — send</title>
+    <link rel="stylesheet" href="../src/styles/app.css" />
+  </head>
+  <body>
+    <div class="masthead">
+      <h1>DECIMEN <small>transmitter</small></h1>
+      <div class="eyebrow">point the receiving device's camera at this screen</div>
+    </div>
+
+    <div class="statusline live">
+      <span class="dot"></span>
+      <span id="specs">loading payload…</span>
+    </div>
+
+    <details class="settings">
+      <summary>Signal settings</summary>
+      <div class="row">
+        <label>
+          source
+          <select id="cfg-payload">
+            <option value="../samples/success.png" selected>512 KB demo image</option>
+            <option value="../samples/success-2mb.png">2 MB demo image</option>
+            <option value="__custom__">Custom file…</option>
+          </select>
+        </label>
+        <label>
+          choose file
+          <input id="cfg-file" type="file" />
+        </label>
+        <label>
+          tx fps
+          <select id="cfg-fps">
+            <option>10</option>
+            <option>15</option>
+            <option>20</option>
+            <option selected>24</option>
+            <option>30</option>
+            <option>60</option>
+          </select>
+        </label>
+        <label>
+          bytes / frame
+          <select id="cfg-bytes">
+            <option>500</option>
+            <option>1000</option>
+            <option selected>1465</option>
+            <option>1850</option>
+            <option>2331</option>
+            <option>2953</option>
+          </select>
+        </label>
+        <label>
+          error correction
+          <select id="cfg-ecc">
+            <option selected>L</option>
+            <option>M</option>
+            <option>Q</option>
+            <option>H</option>
+          </select>
+        </label>
+        <label>
+          display size
+          <input id="cfg-size" type="range" min="300" max="1200" step="50" value="900" />
+        </label>
+      </div>
+      <div class="note">
+        Changing any setting restarts the stream — the receiver resets
+        automatically off the new session id, no action needed on that end.
+        Picking a file switches "source" to Custom.
+      </div>
+    </details>
+
+    <div class="viewfinder">
+      <span class="vf-bl"></span><span class="vf-br"></span>
+      <div class="stage"><canvas id="qr" width="16" height="16"></canvas></div>
+    </div>
+
+    <p class="hint">Max screen brightness helps. The stream loops until stopped.</p>
+    <script type="module" src="../src/send/main.ts"></script>
+  </body>
+</html>

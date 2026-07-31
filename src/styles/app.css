@@ -1,0 +1,501 @@
+/* Design tokens ------------------------------------------------------- */
+:root {
+  --ink: #0b0d10;
+  --panel: #14171b;
+  --panel-raised: #191d22;
+  --line: #262b30;
+  --paper: #e7e9ec;
+  --mute: #6e747b;
+  --mute-dim: #454a50;
+  --scan: #ff3122; /* active / live / scanning — laser-scanner red */
+  --scan-dim: #7a231d;
+  --ice: #bfe9ff; /* capture / lock / success — cool phosphor */
+  --ice-dim: #4d6b78;
+  --radius: 3px;
+  --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --sans: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Public+Sans:wght@400;500;600&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+html {
+  background: var(--ink);
+}
+body {
+  margin: 0;
+  background: var(--ink);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 28px 28px;
+  background-position: center top;
+  background-attachment: fixed;
+  color: var(--paper);
+  font: 14px/1.6 var(--mono);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 28px 20px 48px;
+  min-height: 100vh;
+}
+
+/* Masthead ------------------------------------------------------------ */
+.masthead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: min(92vw, 640px);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+h1 {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper);
+  margin: 0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+h1::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--scan);
+  box-shadow: 0 0 0 3px rgba(255, 49, 34, 0.15);
+  flex: none;
+}
+h1 small {
+  color: var(--mute);
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 400;
+}
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mute-dim);
+}
+
+.hint {
+  color: var(--mute);
+  font-size: 12.5px;
+  text-align: center;
+  max-width: 640px;
+  line-height: 1.65;
+}
+.hint strong {
+  color: var(--paper);
+  font-weight: 600;
+}
+a {
+  color: var(--ice);
+  text-decoration-color: var(--ice-dim);
+}
+
+/* Buttons --------------------------------------------------------------*/
+button,
+a.btn {
+  font: 600 13px/1 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--ice);
+  border: 0;
+  border-radius: var(--radius);
+  padding: 15px 34px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: filter 0.15s ease;
+}
+button:hover,
+a.btn:hover {
+  filter: brightness(1.08);
+}
+button:focus-visible,
+a.btn:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--scan);
+  outline-offset: 2px;
+}
+
+/* Landing page: signal-path diagram ------------------------------------*/
+.diagram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0;
+  width: min(92vw, 720px);
+  padding: 28px 10px;
+}
+.diagram .node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  min-width: 84px;
+}
+.diagram .node .glyph {
+  font-size: 20px;
+  color: var(--ice);
+}
+.diagram .node .label {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mute);
+  text-align: center;
+}
+.diagram .link {
+  flex: 1 1 32px;
+  min-width: 24px;
+  height: 1px;
+  background: var(--line);
+  position: relative;
+  align-self: center;
+}
+.diagram .link::after {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -6px;
+  width: 6px;
+  height: 3px;
+  background: var(--scan);
+  animation: sweep 2.4s ease-in-out infinite;
+}
+@keyframes sweep {
+  0% {
+    left: -6px;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    left: calc(100% - 6px);
+    opacity: 0;
+  }
+}
+.diagram .link.air::after {
+  background: var(--ice);
+  animation-duration: 1.6s;
+}
+
+.cta-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.cta-row a.btn.secondary {
+  background: transparent;
+  color: var(--paper);
+  border: 1px solid var(--line);
+}
+
+.body-copy {
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--mute);
+  max-width: 560px;
+  text-align: center;
+  line-height: 1.7;
+}
+.body-copy strong {
+  color: var(--paper);
+  font-weight: 600;
+}
+
+/* Viewfinder / stage: signature motif ---------------------------------*/
+.viewfinder {
+  position: relative;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--panel);
+}
+.viewfinder::before,
+.viewfinder::after,
+.viewfinder .vf-tl,
+.viewfinder .vf-tr,
+.viewfinder .vf-bl,
+.viewfinder .vf-br {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-color: var(--ice);
+  border-style: solid;
+  border-width: 0;
+}
+.viewfinder::before {
+  top: 4px;
+  left: 4px;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+.viewfinder::after {
+  top: 4px;
+  right: 4px;
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+.viewfinder .vf-bl {
+  bottom: 4px;
+  left: 4px;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+.viewfinder .vf-br {
+  bottom: 4px;
+  right: 4px;
+  border-bottom-width: 2px;
+  border-right-width: 2px;
+}
+
+.stage {
+  background: #fff;
+  border-radius: var(--radius);
+}
+.stage canvas {
+  display: block;
+  image-rendering: pixelated;
+}
+.preview {
+  width: min(92vw, 480px);
+}
+.preview video {
+  width: 100%;
+  border-radius: var(--radius);
+  background: #000;
+  display: block;
+}
+
+/* Status line ----------------------------------------------------------*/
+.statusline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--mute);
+  text-align: center;
+  max-width: 640px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.statusline .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--mute-dim);
+  flex: none;
+}
+.statusline.live .dot {
+  background: var(--scan);
+  animation: pulse 1s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+/* Signal-lock meter (progress bar) --------------------------------------*/
+.progress {
+  width: min(92vw, 480px);
+  height: 20px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+}
+.progress::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent calc(5% - 1px),
+    var(--line) calc(5% - 1px),
+    var(--line) 5%
+  );
+  pointer-events: none;
+}
+.progress > div {
+  height: 100%;
+  background: linear-gradient(90deg, var(--scan-dim), var(--scan));
+  border-radius: 1px;
+  transition: width 0.25s;
+}
+
+.done {
+  color: var(--ice);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.done::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: var(--ice);
+  border-radius: 50%;
+}
+img.received {
+  max-width: min(92vw, 640px);
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+}
+a.download {
+  margin-top: 4px;
+}
+
+/* Instrument panel: settings --------------------------------------------*/
+details.settings {
+  width: min(92vw, 640px);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0;
+}
+details.settings summary {
+  cursor: pointer;
+  color: var(--mute);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 12px 16px;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+details.settings summary::-webkit-details-marker {
+  display: none;
+}
+details.settings summary::before {
+  content: "▸";
+  color: var(--mute-dim);
+  transition: transform 0.15s;
+}
+details.settings[open] summary::before {
+  transform: rotate(90deg);
+}
+details.settings .row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+  padding: 4px 16px 16px;
+  border-top: 1px solid var(--line);
+}
+details.settings label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 10px;
+  color: var(--mute);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+details.settings select,
+details.settings input[type="file"],
+details.settings input[type="range"] {
+  font: 13px/1.3 var(--mono);
+  color: var(--paper);
+  background: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 7px 9px;
+}
+details.settings input[type="file"] {
+  max-width: 180px;
+  padding: 6px 7px;
+}
+details.settings .note {
+  font-family: var(--sans);
+  text-transform: none;
+  letter-spacing: normal;
+  font-size: 11.5px;
+  color: var(--mute-dim);
+  padding: 0 16px 14px;
+  line-height: 1.6;
+}
+
+/* Metrics: oscilloscope readout row -------------------------------------*/
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 1px;
+  width: min(92vw, 640px);
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.metric {
+  background: var(--panel);
+  padding: 10px 12px;
+}
+.metric .k {
+  font-size: 9px;
+  color: var(--mute);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.metric .v {
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+.metric .v.amber {
+  color: var(--scan);
+}
+.metric .v.ok {
+  color: var(--ice);
+}
